@@ -31,6 +31,17 @@ function operate(operator, num1, num2){
     }
 }
 
+function populateDisplay(string){
+    
+}
+
 let number1 = 0;
 let operator = "";
 let number2 = 0;
+
+let numberButtons = Array.from(document.querySelectorAll("button")).filter(
+    (button) => !Number.isNaN(Number.parseInt(button.textContent)));
+
+numberButtons.forEach(button => {
+    button.addEventListener("click", event => populateDisplay(event.target.textContent));
+});

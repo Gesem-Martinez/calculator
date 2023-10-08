@@ -13,6 +13,8 @@ html{
     width: 500px;
     margin: 0 auto;
     padding: 20px;
+    border-radius: 16px;
+    font-family: 'Onest', sans-serif;
 
     display: flex;
     flex-direction: column;
@@ -22,12 +24,13 @@ html{
 .display{
     width: 100%;
     height: 150px;
-}
-
-.display > input{
-    width: inherit;
-    border: none;
-    height: 100%;
+    background-color: #FFF2D8;
+    border-radius: 16px;
+    
+    font-size: 70px;
+    font-family: inherit;
+    text-align: right;
+    color: #113946;
 }
 
 .btn{
@@ -35,6 +38,12 @@ html{
     height: 100px;
     border: none;
     border-radius: 16px;
+    background-color: #EAD7BB;
+    color: #113946;
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 35px;
 }
 
 .buttons{
