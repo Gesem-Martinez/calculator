@@ -54,13 +54,12 @@ function operate(operators, numbers){
     return result;
 }
 
-function clearDisplay(){
-    document.querySelector(".display").textContent = "";
+function clearDisplay(display){
+    display.textContent = "";
     return [];
 }
 
-function populateDisplay(string){
-    let display = document.querySelector(".display");
+function populateDisplay(string, display){
     let displayContent = display.textContent;
 
     if(displayContent.length === 10){
@@ -70,9 +69,21 @@ function populateDisplay(string){
     display.textContent += string;
 }
 
+function undo(display){
+    let textArr = [...display.textContent];
+    textArr.splice(textArr.length - 1, 1)
+    let modifiedDisplayText = textArr.join("");
+
+    clearDisplay(display);
+    populateDisplay(modifiedDisplayText, display);
+}
+
 //Variables to store the expression to operate on
 let operators = [];
 let numbers = [];
+
+//Varible that stores the display element
+let display = document.querySelector(".display");
 
 //Array with the number buttons
 let numberButtons = Array.from(document.querySelectorAll("button")).filter(
@@ -88,21 +99,22 @@ let specialButtons = Array.from(document.querySelectorAll("button")).filter(
 let printableButtons = numberButtons.concat(specialButtons);
 let equalsBtn = document.querySelector(".equals");
 let clearBtn = document.querySelector(".clear");
+let backSpaceBtn = document.querySelector(".backspace");
 
 printableButtons.forEach(button => {
-    button.addEventListener("click", event => populateDisplay(event.target.textContent));
+    button.addEventListener("click", event => populateDisplay(event.target.textContent, display));
 });
 
 equalsBtn.addEventListener("click", (event) =>{
-    numbers = document.querySelector(".display").textContent.split(/[\%\/\x\-\+]/g);
-    operators = document.querySelector(".display").textContent.match(/[\%\/\x\-\+]/g);
+    numbers = display.textContent.split(/[\%\/\x\-\+]/g);
+    operators = display.textContent.match(/[\%\/\x\-\+]/g);
 
     let result = operate(operators, numbers);
-    numbers = clearDisplay();
+    numbers = clearDisplay(display);
     operators = numbers;
     console.log(numbers, operators);
-    populateDisplay(result.toString().slice(0, 10));
-
+    populateDisplay(result.toString().slice(0, 10), display);
 });
 
-clearBtn.addEventListener("click", () => clearDisplay());
+clearBtn.addEventListener("click", () => clearDisplay(display));
+backSpaceBtn.addEventListener("click", () => undo(display));
