@@ -39,7 +39,7 @@ function operate(operators, numbers){
             case "-":
                 result = substract(result, numbers[i + 1]);
                 break;
-            case "x":
+            case "x" || "*":
                 result = multiply(result, numbers[i + 1]);
                 break;
             case "/":
@@ -68,6 +68,7 @@ function populateDisplay(string, display){
         return;
     }
 
+    if(string === "*") string = "x";
     display.textContent += string;
 }
 
@@ -113,6 +114,7 @@ let equalsBtn = document.querySelector(".equals");
 let clearBtn = document.querySelector(".clear");
 let backSpaceBtn = document.querySelector(".backspace");
 let keyboardInputs = printableButtons.map((btn) => btn.textContent );
+keyboardInputs.push("*");
 
 printableButtons.forEach(button => {
     button.addEventListener("click", event => populateDisplay(event.target.textContent, display));
@@ -127,11 +129,13 @@ clearBtn.addEventListener("click", () => clearDisplay(display));
 backSpaceBtn.addEventListener("click", () => undo(display));
 
 // Keuboard Support
-let calculatorDiv = document.querySelector(".frame");
-document.addEventListener("keypress", (event) =>{
-    if(keyboardInputs.includes(event.key)){
-        populateDisplay(event.key, display);
+document.addEventListener("keydown", (event) =>{
+    let pressedKey = event.key;
+    if(keyboardInputs.includes(pressedKey)){
+        populateDisplay(pressedKey, display);
     }
 
-    if(event.key == "Enter") showResults(display);
+    if(pressedKey === "Enter") showResults(display);
+    if(pressedKey === "Backspace") undo(display);
+    if(pressedKey == "Delete") clearDisplay(display);
 });
