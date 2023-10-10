@@ -1,3 +1,5 @@
+'use strict';
+
 function add(num1, num2){
     return num1 + num2;
 }
@@ -78,9 +80,19 @@ function undo(display){
     populateDisplay(modifiedDisplayText, display);
 }
 
-//Variables to store the expression to operate on
-let operators = [];
-let numbers = [];
+function showResults(display){
+    //Variables to store the expression to operate on
+    let operators = [];
+    let numbers = [];
+
+    numbers = display.textContent.split(/[\%\/\x\-\+]/g);
+    operators = display.textContent.match(/[\%\/\x\-\+]/g);
+
+    let result = operate(operators, numbers);
+    numbers = clearDisplay(display);
+    operators = numbers;
+    populateDisplay(result.toString().slice(0, 10), display);
+}
 
 //Varible that stores the display element
 let display = document.querySelector(".display");
@@ -100,21 +112,26 @@ let printableButtons = numberButtons.concat(specialButtons);
 let equalsBtn = document.querySelector(".equals");
 let clearBtn = document.querySelector(".clear");
 let backSpaceBtn = document.querySelector(".backspace");
+let keyboardInputs = printableButtons.map((btn) => btn.textContent );
 
 printableButtons.forEach(button => {
     button.addEventListener("click", event => populateDisplay(event.target.textContent, display));
 });
 
 equalsBtn.addEventListener("click", (event) =>{
-    numbers = display.textContent.split(/[\%\/\x\-\+]/g);
-    operators = display.textContent.match(/[\%\/\x\-\+]/g);
-
-    let result = operate(operators, numbers);
-    numbers = clearDisplay(display);
-    operators = numbers;
-    console.log(numbers, operators);
-    populateDisplay(result.toString().slice(0, 10), display);
+    //console.log(numbers, operators);
+    showResults(display);
 });
 
 clearBtn.addEventListener("click", () => clearDisplay(display));
 backSpaceBtn.addEventListener("click", () => undo(display));
+
+// Keuboard Support
+let calculatorDiv = document.querySelector(".frame");
+document.addEventListener("keypress", (event) =>{
+    if(keyboardInputs.includes(event.key)){
+        populateDisplay(event.key, display);
+    }
+
+    if(event.key == "Enter") showResults(display);
+});

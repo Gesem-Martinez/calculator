@@ -8,6 +8,13 @@ html{
     box-sizing: inherit;
 }
 
+body{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .frame{
     background-color: #BCA37F;
     width: 500px;
