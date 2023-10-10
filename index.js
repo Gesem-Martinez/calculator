@@ -133,9 +133,17 @@ document.addEventListener("keydown", (event) =>{
     let pressedKey = event.key;
     if(keyboardInputs.includes(pressedKey)){
         populateDisplay(pressedKey, display);
+    } else {
+        switch(pressedKey){
+            case "Enter":
+                showResults(display);
+                break;
+            case "Backspace":
+                undo(display);
+                break;
+            case "Delete":
+                clearDisplay(display);
+                break;
+        }
     }
-
-    if(pressedKey === "Enter") showResults(display);
-    if(pressedKey === "Backspace") undo(display);
-    if(pressedKey == "Delete") clearDisplay(display);
 });
